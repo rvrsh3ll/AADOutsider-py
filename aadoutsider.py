@@ -49,6 +49,9 @@ def output_data(data):
         for cur_data in sorted(data, key=lambda item: item['Name'].lower()):
             output_str += row_format.format(*[str(cur_data[cur_header]) for cur_header in header]) + '\n'
 
+    elif OUTPUT_FORM == 'list':
+        output_str = '\n'.join(sorted([t['Name'] for t in data]))
+
     output_str += '\n'
 
     # Write string to disk
@@ -418,6 +421,12 @@ def recon_as_outsider(domain_name=None, username=None, single=False, get_relayin
     domains = get_tenant_domains(domain_name, subscope=tenant_subscope)
     logging.info(f'Found {len(domains)} domains!')
 
+    if OUTPUT_FORM == 'list':
+        # Special case with list where there is no need for any data except
+        # the domain list
+        output_data([{'Name': t} for t in domains])
+        return
+
     init_progress(len(domains))
 
     for domain in domains:
@@ -563,7 +572,7 @@ def main():
     parser_a.add_argument('-s', '--single', action='store_true', help='only perform advanced checks for the targeted domain', default=False)
     parser_a.add_argument('-r', '--relayingparties', action='store_true', help='retrieve relaying parties of STSs', default=False)
     parser_a.add_argument('-o', '--output', help='output file', default='/dev/stdout')
-    parser_a.add_argument('-of', '--output-form', help='output format', default='pretty', choices=['json','csv','pretty'])
+    parser_a.add_argument('-of', '--output-form', help='output format', default='pretty', choices=['json','csv','pretty','list'])
     
     # cmdlet UserEnumerationAsOutsider
     parser_enum = subparsers.add_parser('user_enum', help='UserEnumerationAsOutsider')
