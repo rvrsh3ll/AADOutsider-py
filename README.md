@@ -1,10 +1,5 @@
 # AADOutsider-py
 
-> [!CAUTION]
-> The `Invoke-AADIntReconAsOutsider` has now been patched and will not return the other domains registered in the tenant.
-> 
-> See [Microsoft blogpost](https://techcommunity.microsoft.com/blog/exchange/important-update-to-the-get-federationinformation-cmdlet-in-exchange-online/4410095).
-
 ## Intro
 
 This tool is a rewrite of the recon as outsider part of AADInternals.
